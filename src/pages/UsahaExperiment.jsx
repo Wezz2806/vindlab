@@ -408,33 +408,16 @@ const UsahaExperiment = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {pengamatan1.map((row) => {
-                    const m = parseFloat(row.massa);
-                    const s = parseFloat(row.sudut);
-                    const g = parseFloat(row.g);
-                    const f = parseFloat(row.f);
-                    const expectedF = !isNaN(m) && !isNaN(s) && !isNaN(g) ? (m * g * Math.sin(s * Math.PI / 180)) : NaN;
-                    const isFValid = !isNaN(f) && !isNaN(expectedF) && Math.abs(f - expectedF) < 0.25;
-                    const hintF = !isNaN(expectedF) ? expectedF.toFixed(1) : '-';
-
-                    return (
-                      <tr key={row.id}>
-                        <td>{row.id}</td>
-                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatan1, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.sudut} onChange={(e) => updateTableData(setPengamatan1, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatan1, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.d} onChange={(e) => updateTableData(setPengamatan1, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td>
-                          <ValidatedInput
-                            value={row.f}
-                            isValid={isFValid}
-                            correctHint={hintF}
-                            onChange={(e) => updateTableData(setPengamatan1, row.id, 'f', e.target.value)}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {pengamatan1.map((row) => (
+                    <tr key={row.id}>
+                      <td>{row.id}</td>
+                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatan1, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><input type="number" value={row.sudut} onChange={(e) => updateTableData(setPengamatan1, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatan1, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><input type="number" value={row.d} onChange={(e) => updateTableData(setPengamatan1, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><input type="number" value={row.f} onChange={(e) => updateTableData(setPengamatan1, row.id, 'f', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -553,33 +536,16 @@ const UsahaExperiment = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {pengamatan2.map((row) => {
-                    const m = parseFloat(row.massa);
-                    const s = parseFloat(row.sudut);
-                    const g = parseFloat(row.g);
-                    const f = parseFloat(row.f);
-                    const expectedF = !isNaN(m) && !isNaN(s) && !isNaN(g) ? (m * g * Math.sin(s * Math.PI / 180)) : NaN;
-                    const isFValid = !isNaN(f) && !isNaN(expectedF) && Math.abs(f - expectedF) < 0.25;
-                    const hintF = !isNaN(expectedF) ? expectedF.toFixed(1) : '-';
-
-                    return (
-                      <tr key={row.id}>
-                        <td>{row.id}</td>
-                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatan2, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.sudut} onChange={(e) => updateTableData(setPengamatan2, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatan2, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.d} onChange={(e) => updateTableData(setPengamatan2, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td>
-                          <ValidatedInput
-                            value={row.f}
-                            isValid={isFValid}
-                            correctHint={hintF}
-                            onChange={(e) => updateTableData(setPengamatan2, row.id, 'f', e.target.value)}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {pengamatan2.map((row) => (
+                    <tr key={row.id}>
+                      <td>{row.id}</td>
+                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatan2, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><input type="number" value={row.sudut} onChange={(e) => updateTableData(setPengamatan2, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatan2, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><input type="number" value={row.d} onChange={(e) => updateTableData(setPengamatan2, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><input type="number" value={row.f} onChange={(e) => updateTableData(setPengamatan2, row.id, 'f', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
