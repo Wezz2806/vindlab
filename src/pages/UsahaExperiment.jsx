@@ -250,12 +250,14 @@ const UsahaExperiment = () => {
                 </div>
 
                 <h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: 'var(--primary)' }}>📺 Materi Pengantar - Usaha</h4>
-                <p style={{ marginBottom: '0.75rem' }}>
+                <p style={{ marginBottom: '1rem', fontSize: '1.15rem' }}>
                   Apabila usaha bekerja pada bidang miring, dapat dituliskan dengan persamaan sebagai berikut:
                 </p>
-                <p style={{ marginBottom: '1.5rem', fontWeight: 'bold', fontSize: '1.1rem', background: 'rgba(255,255,255,0.5)', padding: '0.5rem', display: 'inline-block', borderRadius: '4px' }}>
-                  W = F ⋅ d ⋅ cos(θ)
-                </p>
+                <div style={{ marginBottom: '1.5rem', background: 'rgba(255,255,255,0.6)', padding: '0.75rem 1.75rem', display: 'inline-block', borderRadius: '8px', border: '1.5px dashed var(--primary)' }}>
+                  <span style={{ fontWeight: '800', fontSize: '1.5rem', color: 'var(--primary)', letterSpacing: '1px' }}>
+                    W = F ⋅ d ⋅ cos(θ)
+                  </span>
+                </div>
 
                 {/* Pertanyaan Pemantik */}
                 <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'rgba(255,255,255,0.9)', borderRadius: '8px', border: '1px solid var(--primary)' }} className="print-avoid-break">
