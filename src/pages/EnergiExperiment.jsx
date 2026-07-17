@@ -2,6 +2,46 @@ import React, { useState, useEffect } from 'react';
 import { Users, HelpCircle, Lightbulb, Beaker, FileSpreadsheet, Activity, CheckCircle, Download, Play, RotateCcw } from 'lucide-react';
 import SectionCard from '../components/SectionCard';
 
+const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, style, step, type = "number" }) => {
+  const isFilled = value !== '' && value !== null && value !== undefined;
+
+  return (
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
+      <input
+        type={type}
+        step={step}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="input-field"
+        style={{
+          width: '100%',
+          padding: '0.5rem',
+          paddingRight: isFilled ? '1.8rem' : '0.5rem',
+          borderColor: isFilled ? (isValid ? '#10B981' : '#EF4444') : '',
+          backgroundColor: isFilled ? (isValid ? '#ECFDF5' : '#FEF2F2') : '',
+          transition: 'all 0.2s ease',
+          ...style
+        }}
+      />
+      {isFilled && (
+        <span style={{
+          position: 'absolute',
+          right: '8px',
+          color: isValid ? '#10B981' : '#EF4444',
+          fontWeight: 'bold',
+          fontSize: '1rem',
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'help'
+        }} title={isValid ? 'Jawaban Benar! ✅' : `Jawaban Kurang Tepat. Seharusnya: ${correctHint}`}>
+          {isValid ? '✓' : '✗'}
+        </span>
+      )}
+    </div>
+  );
+};
+
 const EnergyAnimation = () => {
   const [state, setState] = useState({ x: 10, y: 10, rot: 0, ep: 100, ek: 0 });
 
@@ -404,15 +444,31 @@ const EnergiExperiment = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {pengamatanKinetik.map(row => (
-                    <tr key={row.id}>
-                      <td>{row.id}</td>
-                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.jarak} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'jarak', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.waktu} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'waktu', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.kecepatan} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'kecepatan', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                    </tr>
-                  ))}
+                  {pengamatanKinetik.map(row => {
+                    const dist = parseFloat(row.jarak);
+                    const time = parseFloat(row.waktu);
+                    const v = parseFloat(row.kecepatan);
+                    const expectedV = (!isNaN(dist) && !isNaN(time) && time > 0) ? (dist / time) : 0;
+                    const isVValid = !isNaN(v) && Math.abs(v - expectedV) < 0.15;
+                    const hintV = expectedV.toFixed(1);
+
+                    return (
+                      <tr key={row.id}>
+                        <td>{row.id}</td>
+                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td><input type="number" value={row.jarak} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'jarak', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td><input type="number" value={row.waktu} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'waktu', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.kecepatan}
+                            isValid={isVValid}
+                            correctHint={hintV}
+                            onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'kecepatan', e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -426,16 +482,48 @@ const EnergiExperiment = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {dataKinetik.map(row => (
-                    <tr key={row.id}>
-                      <td>{row.id}</td>
-                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setDataKinetik, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.jarak} onChange={(e) => updateTableData(setDataKinetik, row.id, 'jarak', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.waktu} onChange={(e) => updateTableData(setDataKinetik, row.id, 'waktu', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.kecepatan} onChange={(e) => updateTableData(setDataKinetik, row.id, 'kecepatan', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.ek} onChange={(e) => updateTableData(setDataKinetik, row.id, 'ek', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                    </tr>
-                  ))}
+                  {dataKinetik.map(row => {
+                    const dist = parseFloat(row.jarak);
+                    const time = parseFloat(row.waktu);
+                    const m = parseFloat(row.massa);
+                    const v = parseFloat(row.kecepatan);
+                    const ek = parseFloat(row.ek);
+
+                    const expectedV = (!isNaN(dist) && !isNaN(time) && time > 0) ? (dist / time) : 0;
+                    const expectedEk1 = !isNaN(m) && !isNaN(v) ? 0.5 * m * v * v : NaN;
+                    const expectedEk2 = !isNaN(m) && !isNaN(expectedV) ? 0.5 * m * expectedV * expectedV : NaN;
+
+                    const isVValid = !isNaN(v) && Math.abs(v - expectedV) < 0.15;
+                    const hintV = expectedV.toFixed(1);
+
+                    const isEkValid = !isNaN(ek) && ((!isNaN(expectedEk1) && Math.abs(ek - expectedEk1) < 0.5) || (!isNaN(expectedEk2) && Math.abs(ek - expectedEk2) < 0.5));
+                    const hintEk = !isNaN(expectedEk1) ? expectedEk1.toFixed(1) : (!isNaN(expectedEk2) ? expectedEk2.toFixed(1) : '-');
+
+                    return (
+                      <tr key={row.id}>
+                        <td>{row.id}</td>
+                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setDataKinetik, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td><input type="number" value={row.jarak} onChange={(e) => updateTableData(setDataKinetik, row.id, 'jarak', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td><input type="number" value={row.waktu} onChange={(e) => updateTableData(setDataKinetik, row.id, 'waktu', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.kecepatan}
+                            isValid={isVValid}
+                            correctHint={hintV}
+                            onChange={(e) => updateTableData(setDataKinetik, row.id, 'kecepatan', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.ek}
+                            isValid={isEkValid}
+                            correctHint={hintEk}
+                            onChange={(e) => updateTableData(setDataKinetik, row.id, 'ek', e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -498,15 +586,34 @@ const EnergiExperiment = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {pengamatanPotensial.map(row => (
-                    <tr key={row.id}>
-                      <td>{row.id}</td>
-                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'g', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.ketinggian} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'ketinggian', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.kecepatan} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'kecepatan', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                    </tr>
-                  ))}
+                  {pengamatanPotensial.map(row => {
+                    const h_initial = simPotensialHeight;
+                    const h_current = parseFloat(row.ketinggian);
+                    const g = parseFloat(row.g);
+                    const v = parseFloat(row.kecepatan);
+
+                    const fallenHeight = h_initial - h_current;
+                    const expectedV = (!isNaN(fallenHeight) && fallenHeight >= 0 && !isNaN(g)) ? Math.sqrt(2 * g * fallenHeight) : 0;
+                    const isVValid = !isNaN(v) && Math.abs(v - expectedV) < 0.25;
+                    const hintV = expectedV.toFixed(1);
+
+                    return (
+                      <tr key={row.id}>
+                        <td>{row.id}</td>
+                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'g', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td><input type="number" value={row.ketinggian} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'ketinggian', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.kecepatan}
+                            isValid={isVValid}
+                            correctHint={hintV}
+                            onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'kecepatan', e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -520,16 +627,49 @@ const EnergiExperiment = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {dataPotensial.map(row => (
-                    <tr key={row.id}>
-                      <td>{row.id}</td>
-                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setDataPotensial, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.g} onChange={(e) => updateTableData(setDataPotensial, row.id, 'g', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.kecepatan} onChange={(e) => updateTableData(setDataPotensial, row.id, 'kecepatan', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.ketinggian} onChange={(e) => updateTableData(setDataPotensial, row.id, 'ketinggian', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.ep} onChange={(e) => updateTableData(setDataPotensial, row.id, 'ep', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                    </tr>
-                  ))}
+                  {dataPotensial.map(row => {
+                    const m = parseFloat(row.massa);
+                    const g = parseFloat(row.g);
+                    const h_current = parseFloat(row.ketinggian);
+                    const v = parseFloat(row.kecepatan);
+                    const ep = parseFloat(row.ep);
+
+                    const h_initial = simPotensialHeight;
+                    const fallenHeight = h_initial - h_current;
+                    const expectedV = (!isNaN(fallenHeight) && fallenHeight >= 0 && !isNaN(g)) ? Math.sqrt(2 * g * fallenHeight) : 0;
+                    const expectedEp = !isNaN(m) && !isNaN(g) && !isNaN(h_current) ? m * g * h_current : NaN;
+
+                    const isVValid = !isNaN(v) && Math.abs(v - expectedV) < 0.25;
+                    const hintV = expectedV.toFixed(1);
+
+                    const isEpValid = !isNaN(ep) && !isNaN(expectedEp) && Math.abs(ep - expectedEp) < 0.5;
+                    const hintEp = !isNaN(expectedEp) ? expectedEp.toFixed(1) : '-';
+
+                    return (
+                      <tr key={row.id}>
+                        <td>{row.id}</td>
+                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setDataPotensial, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td><input type="number" value={row.g} onChange={(e) => updateTableData(setDataPotensial, row.id, 'g', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.kecepatan}
+                            isValid={isVValid}
+                            correctHint={hintV}
+                            onChange={(e) => updateTableData(setDataPotensial, row.id, 'kecepatan', e.target.value)}
+                          />
+                        </td>
+                        <td><input type="number" value={row.ketinggian} onChange={(e) => updateTableData(setDataPotensial, row.id, 'ketinggian', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.ep}
+                            isValid={isEpValid}
+                            correctHint={hintEp}
+                            onChange={(e) => updateTableData(setDataPotensial, row.id, 'ep', e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
