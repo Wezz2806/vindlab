@@ -79,10 +79,10 @@ const UsahaExperiment = () => {
     const massArray = String(simMass1).split(',').map(m => Number(m.trim())).filter(m => !isNaN(m) && m > 0);
     const count = Math.min(15, Math.max(1, massArray.length));
     setPengamatan1(Array.from({ length: count }, (_, i) => ({
-      id: i + 1, massa: '', sudut: '', g: '9.8', d: ''
+      id: i + 1, massa: '', sudut: '', g: '10', d: ''
     })));
     setDataUsaha1(Array.from({ length: count }, (_, i) => ({
-      id: i + 1, massa: '', sudut: '', g: '9.8', d: '', f: '', w: ''
+      id: i + 1, massa: '', sudut: '', g: '10', d: '', f: '', w: ''
     })));
   }, [simMass1]);
 
@@ -90,10 +90,10 @@ const UsahaExperiment = () => {
     const angleArray = String(simAngle2).split(',').map(a => Number(a.trim())).filter(a => !isNaN(a) && a > 0);
     const count = Math.min(15, Math.max(1, angleArray.length));
     setPengamatan2(Array.from({ length: count }, (_, i) => ({
-      id: i + 1, massa: '', sudut: '', g: '9.8', d: ''
+      id: i + 1, massa: '', sudut: '', g: '10', d: ''
     })));
     setDataUsaha2(Array.from({ length: count }, (_, i) => ({
-      id: i + 1, massa: '', sudut: '', g: '9.8', d: '', f: '', w: ''
+      id: i + 1, massa: '', sudut: '', g: '10', d: '', f: '', w: ''
     })));
   }, [simAngle2]);
 
@@ -129,11 +129,11 @@ const UsahaExperiment = () => {
         const newData = [];
         for(let i = 0; i < count; i++) {
           const varM = massArray[i] || massArray[0];
-          const g = 9.8;
+          const g = 10;
           const w = varM * g;
           const f_res = (w * Math.sin(simAngle1 * Math.PI / 180)).toFixed(1);
           newData.push({
-            id: i + 1, massa: varM, sudut: simAngle1, g: '9.8', d: simDistance1, f: f_res
+            id: i + 1, massa: varM, sudut: simAngle1, g: '10', d: simDistance1, f: f_res
           });
         }
         setPengamatan1(newData);
@@ -163,11 +163,11 @@ const UsahaExperiment = () => {
         const newData = [];
         for(let i = 0; i < count; i++) {
           const varA = angleArray[i] || angleArray[0];
-          const g = 9.8;
+          const g = 10;
           const w = simMass2 * g;
           const f_res = (w * Math.sin(varA * Math.PI / 180)).toFixed(1);
           newData.push({
-            id: i + 1, massa: simMass2, sudut: varA, g: '9.8', d: simDistance2, f: f_res
+            id: i + 1, massa: simMass2, sudut: varA, g: '10', d: simDistance2, f: f_res
           });
         }
         setPengamatan2(newData);
@@ -387,7 +387,7 @@ const UsahaExperiment = () => {
                     setCartProgress1(0); setIsSimRunning1(false);
                     const massArray = String(simMass1).split(',').map(m => Number(m.trim())).filter(m => !isNaN(m) && m > 0);
                     const count = Math.min(15, Math.max(1, massArray.length));
-                    setPengamatan1(Array.from({ length: count }, (_, i) => ({ id: i + 1, massa: '', sudut: '', g: '9.8', d: '', f: '' })));
+                    setPengamatan1(Array.from({ length: count }, (_, i) => ({ id: i + 1, massa: '', sudut: '', g: '10', d: '', f: '' })));
                   }} className="btn btn-outline">
                     <RotateCcw size={16} /> Reset
                   </button>
@@ -554,7 +554,7 @@ const UsahaExperiment = () => {
                     setCartProgress2(0); setIsSimRunning2(false);
                     const angleArray = String(simAngle2).split(',').map(a => Number(a.trim())).filter(a => !isNaN(a) && a > 0);
                     const count = Math.min(15, Math.max(1, angleArray.length));
-                    setPengamatan2(Array.from({ length: count }, (_, i) => ({ id: i + 1, massa: '', sudut: '', g: '9.8', d: '', f: '' })));
+                    setPengamatan2(Array.from({ length: count }, (_, i) => ({ id: i + 1, massa: '', sudut: '', g: '10', d: '', f: '' })));
                   }} className="btn btn-outline">
                     <RotateCcw size={16} /> Reset
                   </button>

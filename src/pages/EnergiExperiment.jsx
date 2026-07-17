@@ -152,9 +152,9 @@ const EnergiExperiment = () => {
 
   useEffect(() => {
     setPengamatanPotensial(Array.from({ length: Math.max(1, Math.min(15, jumlahPotensial)) }, (_, i) => ({
-      id: i + 1, massa: '', g: '9.8', kecepatan: '', ketinggian: ''
+      id: i + 1, massa: '', g: '10', kecepatan: '', ketinggian: ''
     })));
-    setDataPotensial(Array.from({ length: Math.max(1, Math.min(15, jumlahPotensial)) }, (_, i) => ({ id: i + 1, massa: '', g: '9.8', kecepatan: '', ketinggian: '', ep: '' })));
+    setDataPotensial(Array.from({ length: Math.max(1, Math.min(15, jumlahPotensial)) }, (_, i) => ({ id: i + 1, massa: '', g: '10', kecepatan: '', ketinggian: '', ep: '' })));
   }, [jumlahPotensial]);
 
   // Simulation Kinetik
@@ -250,7 +250,7 @@ const EnergiExperiment = () => {
         setIsPotensialRunning(false);
         // Auto Fill ALL ROWS
         const newData = [];
-        const g_real = 9.8;
+        const g_real = 10;
         const totalRows = Math.min(15, Math.max(1, jumlahPotensial));
         const step = totalRows > 1 ? simPotensialHeight / (totalRows - 1) : simPotensialHeight;
         for (let i = 0; i < totalRows; i++) {
@@ -572,7 +572,7 @@ const EnergiExperiment = () => {
                 </div>
                 <div className="input-group" style={{ marginBottom: 0 }}>
                   <label className="input-label">Gravitasi (m/s²)</label>
-                  <input type="number" value={9.8} readOnly className="input-field" style={{ width: '90px', background: '#f3f4f6' }} />
+                  <input type="number" value={10} readOnly className="input-field" style={{ width: '90px', background: '#f3f4f6' }} />
                 </div>
                 <div className="input-group" style={{ marginBottom: 0 }}>
                   <label className="input-label">Jumlah Data</label>
@@ -582,7 +582,7 @@ const EnergiExperiment = () => {
                   <button onClick={runPotensialSim} disabled={isPotensialRunning} className="btn btn-secondary">Jatuhkan Benda</button>
                   <button onClick={() => {
                     setPotensialY(0); setIsPotensialRunning(false);
-                    setPengamatanPotensial(Array.from({ length: Math.max(1, Math.min(15, jumlahPotensial)) }, (_, i) => ({ id: i + 1, massa: '', g: '9.8', kecepatan: '', ketinggian: '' })));
+                    setPengamatanPotensial(Array.from({ length: Math.max(1, Math.min(15, jumlahPotensial)) }, (_, i) => ({ id: i + 1, massa: '', g: '10', kecepatan: '', ketinggian: '' })));
                   }} className="btn btn-outline">Reset</button>
                 </div>
               </div>
