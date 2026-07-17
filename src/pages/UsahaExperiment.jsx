@@ -2,6 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Users, HelpCircle, Lightbulb, Beaker, FileSpreadsheet, Activity, CheckCircle, Download, Play, RotateCcw } from 'lucide-react';
 import SectionCard from '../components/SectionCard';
 
+const PrintableInput = ({ value, onChange, className, style, type = "number", placeholder, step }) => {
+  return (
+    <div style={{ width: '100%' }}>
+      <input
+        type={type}
+        step={step}
+        value={value ?? ''}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={`${className || ''} no-print`}
+        style={style}
+      />
+      <span className="print-only" style={{ padding: '0.5rem', display: 'inline-block', width: '100%', textAlign: 'center', color: '#000', fontSize: '1rem' }}>
+        {value !== '' && value !== null && value !== undefined ? value : '-'}
+      </span>
+    </div>
+  );
+};
+
 const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, style, step, type = "number" }) => {
   const isFilled = value !== '' && value !== null && value !== undefined;
 
@@ -13,7 +32,7 @@ const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, st
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="input-field"
+        className="input-field no-print"
         style={{
           width: '100%',
           padding: '0.5rem',
@@ -25,7 +44,7 @@ const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, st
         }}
       />
       {isFilled && (
-        <span style={{
+        <span className="no-print" style={{
           position: 'absolute',
           right: '8px',
           color: isValid ? '#10B981' : '#EF4444',
@@ -38,6 +57,9 @@ const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, st
           {isValid ? '✓' : '✗'}
         </span>
       )}
+      <span className="print-only" style={{ padding: '0.5rem', display: 'inline-block', width: '100%', textAlign: 'center', color: '#000', fontSize: '1rem' }}>
+        {value !== '' && value !== null && value !== undefined ? value : '-'}
+      </span>
     </div>
   );
 };
@@ -230,11 +252,13 @@ const UsahaExperiment = () => {
         <SectionCard title="1. Identitas Kelompok" icon={<Users />} delay={0.1}>
           <div className="input-group">
             <label className="input-label">Nama Kelompok</label>
-            <input type="text" name="namaKelompok" value={formData.namaKelompok} onChange={handleInputChange} className="input-field" placeholder="Masukkan nama kelompok" />
+            <input type="text" name="namaKelompok" value={formData.namaKelompok} onChange={handleInputChange} className="input-field no-print" placeholder="Masukkan nama kelompok" />
+            <div className="print-only print-text-underline">{formData.namaKelompok || '-'}</div>
           </div>
           <div className="input-group">
             <label className="input-label">Anggota Kelompok</label>
-            <textarea name="anggota" value={formData.anggota} onChange={handleInputChange} className="input-field" placeholder="1. ...&#10;2. ...&#10;3. ..." style={{ minHeight: '80px' }} />
+            <textarea name="anggota" value={formData.anggota} onChange={handleInputChange} className="input-field no-print" placeholder="1. ...&#10;2. ...&#10;3. ..." style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.anggota || '-'}</div>
           </div>
         </SectionCard>
         {/* 2. Orientasi Masalah */}
@@ -346,13 +370,15 @@ const UsahaExperiment = () => {
         {/* 3. Merumuskan Masalah */}
         <SectionCard title="3. Merumuskan Masalah" icon={<Lightbulb />} delay={0.3}>
           <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.6' }}><strong>Panduan Merumuskan Masalah:</strong><br/>Identifikasi variabel manipulasi, kontrol, dan respon pada percobaan usaha. Kemudian, buatlah pertanyaan penelitian untuk mengetahui bagaimana perubahan suatu variabel memengaruhi besar usaha, serta bagaimana hubungan antara gaya dan perpindahan dalam percobaan tersebut.</p>
-          <textarea name="rumusanMasalah" value={formData.rumusanMasalah} onChange={handleInputChange} className="input-field" placeholder="Tuliskan rumusan masalah Anda..." style={{ width: '100%' }} />
+          <textarea name="rumusanMasalah" value={formData.rumusanMasalah} onChange={handleInputChange} className="input-field no-print" placeholder="Tuliskan rumusan masalah Anda..." style={{ width: '100%' }} />
+          <div className="print-only print-textarea-content">{formData.rumusanMasalah || '-'}</div>
         </SectionCard>
 
         {/* 4. Merumuskan Hipotesis */}
         <SectionCard title="4. Merumuskan Hipotesis" icon={<Beaker />} delay={0.4}>
           <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.6' }}><strong>Panduan Merumuskan Hipotesis:</strong><br/>Hipotesis adalah jawaban sementara atas rumusan masalah. Gunakan format:<br/>"Jika [variabel independen] meningkat, maka [variabel dependen] akan [naik/turun/berubah]"<br/>Contoh: "Jika gaya yang diberikan meningkat, maka usaha yang dilakukan akan meningkat."</p>
-          <textarea name="hipotesis" value={formData.hipotesis} onChange={handleInputChange} className="input-field" placeholder="Tuliskan hipotesis Anda..." style={{ width: '100%' }} />
+          <textarea name="hipotesis" value={formData.hipotesis} onChange={handleInputChange} className="input-field no-print" placeholder="Tuliskan hipotesis Anda..." style={{ width: '100%' }} />
+          <div className="print-only print-textarea-content">{formData.hipotesis || '-'}</div>
         </SectionCard>
 
         {/* 5A. Mengumpulkan Data Eksperimen 1 */}
@@ -413,11 +439,11 @@ const UsahaExperiment = () => {
                   {pengamatan1.map((row) => (
                     <tr key={row.id}>
                       <td>{row.id}</td>
-                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatan1, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                      <td><input type="number" value={row.sudut} onChange={(e) => updateTableData(setPengamatan1, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                      <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatan1, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                      <td><input type="number" value={row.d} onChange={(e) => updateTableData(setPengamatan1, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                      <td><input type="number" value={row.f} onChange={(e) => updateTableData(setPengamatan1, row.id, 'f', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.massa} onChange={(e) => updateTableData(setPengamatan1, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.sudut} onChange={(e) => updateTableData(setPengamatan1, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.g} onChange={(e) => updateTableData(setPengamatan1, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.d} onChange={(e) => updateTableData(setPengamatan1, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.f} onChange={(e) => updateTableData(setPengamatan1, row.id, 'f', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -580,11 +606,11 @@ const UsahaExperiment = () => {
                   {pengamatan2.map((row) => (
                     <tr key={row.id}>
                       <td>{row.id}</td>
-                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatan2, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                      <td><input type="number" value={row.sudut} onChange={(e) => updateTableData(setPengamatan2, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                      <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatan2, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                      <td><input type="number" value={row.d} onChange={(e) => updateTableData(setPengamatan2, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                      <td><input type="number" value={row.f} onChange={(e) => updateTableData(setPengamatan2, row.id, 'f', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.massa} onChange={(e) => updateTableData(setPengamatan2, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.sudut} onChange={(e) => updateTableData(setPengamatan2, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.g} onChange={(e) => updateTableData(setPengamatan2, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.d} onChange={(e) => updateTableData(setPengamatan2, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                      <td><PrintableInput value={row.f} onChange={(e) => updateTableData(setPengamatan2, row.id, 'f', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -695,28 +721,32 @@ const UsahaExperiment = () => {
             <label className="input-label" style={{ marginBottom: '0.5rem', lineHeight: '1.4' }}>
               1. Jika massa gerobak diperbesar dan sudut kemiringan juga diperbesar, bagaimana pengaruh gabungan kedua variabel tersebut terhadap gaya?
             </label>
-            <textarea name="analisis1" value={formData.analisis1} onChange={handleInputChange} className="input-field" style={{ minHeight: '80px' }} />
+            <textarea name="analisis1" value={formData.analisis1} onChange={handleInputChange} className="input-field no-print" style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.analisis1 || '-'}</div>
           </div>
           
           <div className="input-group print-avoid-break" style={{ marginTop: '1.5rem' }}>
             <label className="input-label" style={{ marginBottom: '0.5rem', lineHeight: '1.4' }}>
-              2. Karena perpindahan dijaga tetap, bagaimana perubahan gaya akibat variasi massa dan sudut mempengaruhi besar usaha yang dilakukan?
+              2. Karena perpindahan dijaga tetap, bagaimana perubahan gaya akibat variasi massa and sudut mempengaruhi besar usaha yang dilakukan?
             </label>
-            <textarea name="analisis2" value={formData.analisis2} onChange={handleInputChange} className="input-field" style={{ minHeight: '80px' }} />
+            <textarea name="analisis2" value={formData.analisis2} onChange={handleInputChange} className="input-field no-print" style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.analisis2 || '-'}</div>
           </div>
 
           <div className="input-group print-avoid-break" style={{ marginTop: '1.5rem' }}>
             <label className="input-label" style={{ marginBottom: '0.5rem', lineHeight: '1.4' }}>
               3. Apakah terdapat kondisi di mana usaha yang dilakukan relatif sama meskipun gaya yang diberikan berbeda?
             </label>
-            <textarea name="analisis3" value={formData.analisis3} onChange={handleInputChange} className="input-field" style={{ minHeight: '80px' }} />
+            <textarea name="analisis3" value={formData.analisis3} onChange={handleInputChange} className="input-field no-print" style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.analisis3 || '-'}</div>
           </div>
 
           <div className="input-group print-avoid-break" style={{ marginTop: '1.5rem' }}>
             <label className="input-label" style={{ marginBottom: '0.5rem', lineHeight: '1.4' }}>
               4. Berdasarkan data hasil praktikum, nilai apakah hubungan antara massa, sudut kemiringan, gaya, dan usaha sudah sesuai dengan teori usaha dalam fisika, jelaskan! Jika terdapat ketidaksesuaian, jelaskan alasan yang paling mungkin.
             </label>
-            <textarea name="analisis4" value={formData.analisis4} onChange={handleInputChange} className="input-field" style={{ minHeight: '80px' }} />
+            <textarea name="analisis4" value={formData.analisis4} onChange={handleInputChange} className="input-field no-print" style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.analisis4 || '-'}</div>
           </div>
         </SectionCard>
 
@@ -724,7 +754,8 @@ const UsahaExperiment = () => {
         <SectionCard title="7. Kesimpulan" icon={<CheckCircle />} delay={0.7}>
           <div className="print-avoid-break">
             <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.6' }}><strong>Panduan Menulis Kesimpulan:</strong><br/>Apakah hipotesis Anda terbukti atau tidak terbukti? Jelaskan!<br/>Apa yang dapat disimpulkan tentang hubungan antara variabel yang diteliti?<br/>Apakah hasil percobaan sesuai dengan konsep usaha?<br/>Apa implikasi atau aplikasi hasil penelitian ini dalam kehidupan sehari-hari?</p>
-            <textarea name="kesimpulan" value={formData.kesimpulan} onChange={handleInputChange} className="input-field" placeholder="Tuliskan kesimpulan akhir Anda..." style={{ width: '100%' }} />
+            <textarea name="kesimpulan" value={formData.kesimpulan} onChange={handleInputChange} className="input-field no-print" placeholder="Tuliskan kesimpulan akhir Anda..." style={{ width: '100%' }} />
+            <div className="print-only print-textarea-content">{formData.kesimpulan || '-'}</div>
           </div>
         </SectionCard>
       </div>

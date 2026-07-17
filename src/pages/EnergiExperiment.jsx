@@ -2,6 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Users, HelpCircle, Lightbulb, Beaker, FileSpreadsheet, Activity, CheckCircle, Download, Play, RotateCcw } from 'lucide-react';
 import SectionCard from '../components/SectionCard';
 
+const PrintableInput = ({ value, onChange, className, style, type = "number", placeholder, step }) => {
+  return (
+    <div style={{ width: '100%' }}>
+      <input
+        type={type}
+        step={step}
+        value={value ?? ''}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={`${className || ''} no-print`}
+        style={style}
+      />
+      <span className="print-only" style={{ padding: '0.5rem', display: 'inline-block', width: '100%', textAlign: 'center', color: '#000', fontSize: '1rem' }}>
+        {value !== '' && value !== null && value !== undefined ? value : '-'}
+      </span>
+    </div>
+  );
+};
+
 const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, style, step, type = "number" }) => {
   const isFilled = value !== '' && value !== null && value !== undefined;
 
@@ -13,7 +32,7 @@ const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, st
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="input-field"
+        className="input-field no-print"
         style={{
           width: '100%',
           padding: '0.5rem',
@@ -25,7 +44,7 @@ const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, st
         }}
       />
       {isFilled && (
-        <span style={{
+        <span className="no-print" style={{
           position: 'absolute',
           right: '8px',
           color: isValid ? '#10B981' : '#EF4444',
@@ -38,6 +57,9 @@ const ValidatedInput = ({ value, isValid, correctHint, onChange, placeholder, st
           {isValid ? '✓' : '✗'}
         </span>
       )}
+      <span className="print-only" style={{ padding: '0.5rem', display: 'inline-block', width: '100%', textAlign: 'center', color: '#000', fontSize: '1rem' }}>
+        {value !== '' && value !== null && value !== undefined ? value : '-'}
+      </span>
     </div>
   );
 };
@@ -288,11 +310,13 @@ const EnergiExperiment = () => {
         <SectionCard title="1. Identitas Kelompok" icon={<Users />} delay={0.1}>
           <div className="input-group">
             <label className="input-label">Nama Kelompok</label>
-            <input type="text" name="namaKelompok" value={formData.namaKelompok} onChange={handleInputChange} className="input-field" placeholder="Masukkan nama kelompok" />
+            <input type="text" name="namaKelompok" value={formData.namaKelompok} onChange={handleInputChange} className="input-field no-print" placeholder="Masukkan nama kelompok" />
+            <div className="print-only print-text-underline">{formData.namaKelompok || '-'}</div>
           </div>
           <div className="input-group">
             <label className="input-label">Anggota Kelompok</label>
-            <textarea name="anggota" value={formData.anggota} onChange={handleInputChange} className="input-field" placeholder="1. ...&#10;2. ...&#10;3. ..." style={{ minHeight: '80px' }} />
+            <textarea name="anggota" value={formData.anggota} onChange={handleInputChange} className="input-field no-print" placeholder="1. ...&#10;2. ...&#10;3. ..." style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.anggota || '-'}</div>
           </div>
         </SectionCard>
 
@@ -325,7 +349,8 @@ const EnergiExperiment = () => {
                       1. Saat bola terjatuh dari ketinggian, bagaimana perubahan energi yang terjadi dari awal hingga bola mulai menggelinding? Jelaskan prosesnya menurut pengetahuanmu.
                     </div>
                     <div style={{ flex: '1 1 200px' }}>
-                      <textarea name="jawabanPemantik1" value={formData.jawabanPemantik1} onChange={handleInputChange} className="input-field" placeholder="Tuliskan jawaban Anda di sini..." style={{ width: '100%', minHeight: '80px' }} />
+                      <textarea name="jawabanPemantik1" value={formData.jawabanPemantik1} onChange={handleInputChange} className="input-field no-print" placeholder="Tuliskan jawaban Anda di sini..." style={{ width: '100%', minHeight: '80px' }} />
+                      <div className="print-only print-textarea-content">{formData.jawabanPemantik1 || '-'}</div>
                     </div>
                   </div>
 
@@ -334,7 +359,8 @@ const EnergiExperiment = () => {
                       2. Mengapa setelah menyentuh lantai, bola masih dapat menggelinding meskipun sudah tidak berada di ketinggian?
                     </div>
                     <div style={{ flex: '1 1 200px' }}>
-                      <textarea name="jawabanPemantik2" value={formData.jawabanPemantik2} onChange={handleInputChange} className="input-field" placeholder="Tuliskan jawaban Anda di sini..." style={{ width: '100%', minHeight: '80px' }} />
+                      <textarea name="jawabanPemantik2" value={formData.jawabanPemantik2} onChange={handleInputChange} className="input-field no-print" placeholder="Tuliskan jawaban Anda di sini..." style={{ width: '100%', minHeight: '80px' }} />
+                      <div className="print-only print-textarea-content">{formData.jawabanPemantik2 || '-'}</div>
                     </div>
                   </div>
                 </div>
@@ -360,13 +386,15 @@ const EnergiExperiment = () => {
         {/* 3. Merumuskan Masalah */}
         <SectionCard title="3. Merumuskan Masalah" icon={<Lightbulb />} delay={0.3}>
           <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.6' }}><strong>Panduan Merumuskan Masalah:</strong><br/>Identifikasi variabel yang berubah dan yang dikontrol dalam percobaan. Selanjutnya, gunakan temuan tersebut untuk merumuskan pertanyaan penelitian yang dapat mengarahkan Anda dalam mengkaji bagaimana perubahan suatu variabel mempengaruhi energi sistem, serta bagaimana hubungan antar energi dapat dipahami selama proses berlangsung.</p>
-          <textarea name="rumusanMasalah" value={formData.rumusanMasalah} onChange={handleInputChange} className="input-field" placeholder="Tuliskan rumusan masalah Anda..." style={{ width: '100%' }} />
+          <textarea name="rumusanMasalah" value={formData.rumusanMasalah} onChange={handleInputChange} className="input-field no-print" placeholder="Tuliskan rumusan masalah Anda..." style={{ width: '100%' }} />
+          <div className="print-only print-textarea-content">{formData.rumusanMasalah || '-'}</div>
         </SectionCard>
 
         {/* 4. Merumuskan Hipotesis */}
         <SectionCard title="4. Merumuskan Hipotesis" icon={<Beaker />} delay={0.4}>
           <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.6' }}><strong>Panduan Merumuskan Hipotesis:</strong><br/>Hipotesis adalah jawaban sementara atas rumusan masalah. Gunakan format:<br/>"Jika [variabel independen] meningkat, maka [variabel dependen] akan [naik/turun/berubah]"<br/>Contoh: "Jika ketinggian benda meningkat, maka energi potensial akan meningkat"</p>
-          <textarea name="hipotesis" value={formData.hipotesis} onChange={handleInputChange} className="input-field" placeholder="Tuliskan hipotesis Anda..." style={{ width: '100%' }} />
+          <textarea name="hipotesis" value={formData.hipotesis} onChange={handleInputChange} className="input-field no-print" placeholder="Tuliskan hipotesis Anda..." style={{ width: '100%' }} />
+          <div className="print-only print-textarea-content">{formData.hipotesis || '-'}</div>
         </SectionCard>
 
         {/* 5. Mengumpulkan Data Eksperimen */}
@@ -447,10 +475,10 @@ const EnergiExperiment = () => {
                   {pengamatanKinetik.map(row => (
                     <tr key={row.id}>
                       <td>{row.id}</td>
-                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.jarak} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'jarak', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.waktu} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'waktu', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.kecepatan} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'kecepatan', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                      <td><PrintableInput value={row.massa} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                      <td><PrintableInput value={row.jarak} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'jarak', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                      <td><PrintableInput value={row.waktu} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'waktu', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                      <td><PrintableInput value={row.kecepatan} onChange={(e) => updateTableData(setPengamatanKinetik, row.id, 'kecepatan', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -604,10 +632,10 @@ const EnergiExperiment = () => {
                   {pengamatanPotensial.map(row => (
                     <tr key={row.id}>
                       <td>{row.id}</td>
-                      <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.g} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'g', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.ketinggian} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'ketinggian', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                      <td><input type="number" value={row.kecepatan} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'kecepatan', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                      <td><PrintableInput value={row.massa} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                      <td><PrintableInput value={row.g} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'g', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                      <td><PrintableInput value={row.ketinggian} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'ketinggian', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                      <td><PrintableInput value={row.kecepatan} onChange={(e) => updateTableData(setPengamatanPotensial, row.id, 'kecepatan', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -709,28 +737,32 @@ const EnergiExperiment = () => {
             <label className="input-label" style={{ marginBottom: '0.5rem', lineHeight: '1.4' }}>
               1. Bagaimana hubungan antara massa benda dengan energi kinetik yang dihasilkan saat bergerak? Jelaskan berdasarkan hasil percobaan.
             </label>
-            <textarea name="analisis1" value={formData.analisis1} onChange={handleInputChange} className="input-field" style={{ minHeight: '80px' }} />
+            <textarea name="analisis1" value={formData.analisis1} onChange={handleInputChange} className="input-field no-print" style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.analisis1 || '-'}</div>
           </div>
           
           <div className="input-group print-avoid-break" style={{ marginTop: '1.5rem' }}>
             <label className="input-label" style={{ marginBottom: '0.5rem', lineHeight: '1.4' }}>
               2. Apa pengaruh ketinggian terhadap energi potensial benda? Analisis hubungan tersebut menggunakan data praktikum.
             </label>
-            <textarea name="analisis2" value={formData.analisis2} onChange={handleInputChange} className="input-field" style={{ minHeight: '80px' }} />
+            <textarea name="analisis2" value={formData.analisis2} onChange={handleInputChange} className="input-field no-print" style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.analisis2 || '-'}</div>
           </div>
 
           <div className="input-group print-avoid-break" style={{ marginTop: '1.5rem' }}>
             <label className="input-label" style={{ marginBottom: '0.5rem', lineHeight: '1.4' }}>
               3. Apakah energi mekanik (jumlah energi kinetik dan potensial) selalu konstan dalam percobaan? Jelaskan berdasarkan hasil pengamatan.
             </label>
-            <textarea name="analisis3" value={formData.analisis3} onChange={handleInputChange} className="input-field" style={{ minHeight: '80px' }} />
+            <textarea name="analisis3" value={formData.analisis3} onChange={handleInputChange} className="input-field no-print" style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.analisis3 || '-'}</div>
           </div>
 
           <div className="input-group print-avoid-break" style={{ marginTop: '1.5rem' }}>
             <label className="input-label" style={{ marginBottom: '0.5rem', lineHeight: '1.4' }}>
               4. Berdasarkan data praktikum yang telah kamu peroleh, apakah hasil perhitungan usaha sesuai dengan perubahan energi yang terjadi pada benda? Jelaskan kemungkinan penyebab jika terdapat perbedaan.
             </label>
-            <textarea name="analisis4" value={formData.analisis4} onChange={handleInputChange} className="input-field" style={{ minHeight: '80px' }} />
+            <textarea name="analisis4" value={formData.analisis4} onChange={handleInputChange} className="input-field no-print" style={{ minHeight: '80px' }} />
+            <div className="print-only print-textarea-content">{formData.analisis4 || '-'}</div>
           </div>
         </SectionCard>
 
@@ -738,7 +770,8 @@ const EnergiExperiment = () => {
         <SectionCard title="7. Kesimpulan" icon={<CheckCircle />} delay={0.7}>
           <div className="print-avoid-break">
             <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.6' }}><strong>Panduan Menulis Kesimpulan:</strong><br/>Apakah hipotesis Anda terbukti atau tidak terbukti? Jelaskan!<br/>Apa yang dapat disimpulkan tentang hubungan antara variabel yang diteliti?<br/>Apakah hukum kekekalan energi berlaku dalam eksperimen ini?<br/>Apa implikasi atau aplikasi hasil penelitian ini dalam kehidupan sehari-hari?</p>
-            <textarea name="kesimpulan" value={formData.kesimpulan} onChange={handleInputChange} className="input-field" placeholder="Tuliskan kesimpulan akhir Anda..." style={{ width: '100%' }} />
+            <textarea name="kesimpulan" value={formData.kesimpulan} onChange={handleInputChange} className="input-field no-print" placeholder="Tuliskan kesimpulan akhir Anda..." style={{ width: '100%' }} />
+            <div className="print-only print-textarea-content">{formData.kesimpulan || '-'}</div>
           </div>
         </SectionCard>
 

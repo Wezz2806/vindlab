@@ -217,9 +217,41 @@ tr:last-child td {
 }
 
 /* PRINT MEDIA QUERIES FOR PERFECT PDF */
+.print-only {
+  display: none !important;
+}
+
 @media print {
   .no-print {
     display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  span.print-only {
+    display: inline !important;
+  }
+  div.print-only {
+    display: block !important;
+  }
+  .print-text-underline {
+    border-bottom: 1px solid #000 !important;
+    padding-bottom: 2px !important;
+    min-height: 24px !important;
+    font-size: 1rem !important;
+    color: #000 !important;
+    display: inline-block !important;
+    width: 100% !important;
+  }
+  .print-textarea-content {
+    border-bottom: 1px dashed #666 !important;
+    padding-bottom: 4px !important;
+    min-height: 60px !important;
+    font-size: 1rem !important;
+    color: #000 !important;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    line-height: 1.5 !important;
   }
   body {
     background: white !important;
