@@ -251,7 +251,7 @@ const UsahaExperiment = () => {
 
                 <h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: 'var(--primary)' }}>📺 Materi Pengantar - Usaha</h4>
                 <p style={{ marginBottom: '0.75rem' }}>
-                  Usaha adalah energi yang disalurkan gaya ke sebuah benda sehingga benda tersebut bergerak. Persamaan usaha dapat dituliskan sebagai berikut:
+                  Apabila usaha bekerja pada bidang miring, dapat dituliskan dengan persamaan sebagai berikut:
                 </p>
                 <p style={{ marginBottom: '1.5rem', fontWeight: 'bold', fontSize: '1.1rem', background: 'rgba(255,255,255,0.5)', padding: '0.5rem', display: 'inline-block', borderRadius: '4px' }}>
                   W = F ⋅ d ⋅ cos(θ)
