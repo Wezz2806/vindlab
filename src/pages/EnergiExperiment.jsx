@@ -473,6 +473,16 @@ const EnergiExperiment = () => {
                     const v = parseFloat(row.kecepatan);
                     const ek = parseFloat(row.ek);
 
+                    const refRow = pengamatanKinetik.find(p => p.id === row.id) || {};
+                    const refM = parseFloat(refRow.massa);
+                    const refDist = parseFloat(refRow.jarak);
+                    const refTime = parseFloat(refRow.waktu);
+                    const refV = parseFloat(refRow.kecepatan);
+
+                    const isMValid = !isNaN(m) && !isNaN(refM) && Math.abs(m - refM) < 0.01;
+                    const isDistValid = !isNaN(dist) && !isNaN(refDist) && Math.abs(dist - refDist) < 0.01;
+                    const isTimeValid = !isNaN(time) && !isNaN(refTime) && Math.abs(time - refTime) < 0.01;
+
                     const expectedV = (!isNaN(dist) && !isNaN(time) && time > 0) ? (dist / time) : 0;
                     const expectedEk1 = !isNaN(m) && !isNaN(v) ? 0.5 * m * v * v : NaN;
                     const expectedEk2 = !isNaN(m) && !isNaN(expectedV) ? 0.5 * m * expectedV * expectedV : NaN;
@@ -486,9 +496,30 @@ const EnergiExperiment = () => {
                     return (
                       <tr key={row.id}>
                         <td>{row.id}</td>
-                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setDataKinetik, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                        <td><input type="number" value={row.jarak} onChange={(e) => updateTableData(setDataKinetik, row.id, 'jarak', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                        <td><input type="number" value={row.waktu} onChange={(e) => updateTableData(setDataKinetik, row.id, 'waktu', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.massa}
+                            isValid={isMValid}
+                            correctHint={!isNaN(refM) ? refM.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataKinetik, row.id, 'massa', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.jarak}
+                            isValid={isDistValid}
+                            correctHint={!isNaN(refDist) ? refDist.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataKinetik, row.id, 'jarak', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.waktu}
+                            isValid={isTimeValid}
+                            correctHint={!isNaN(refTime) ? refTime.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataKinetik, row.id, 'waktu', e.target.value)}
+                          />
+                        </td>
                         <td>
                           <ValidatedInput
                             value={row.kecepatan}
@@ -599,6 +630,16 @@ const EnergiExperiment = () => {
                     const v = parseFloat(row.kecepatan);
                     const ep = parseFloat(row.ep);
 
+                    const refRow = pengamatanPotensial.find(p => p.id === row.id) || {};
+                    const refM = parseFloat(refRow.massa);
+                    const refG = parseFloat(refRow.g);
+                    const refH = parseFloat(refRow.ketinggian);
+                    const refV = parseFloat(refRow.kecepatan);
+
+                    const isMValid = !isNaN(m) && !isNaN(refM) && Math.abs(m - refM) < 0.01;
+                    const isGValid = !isNaN(g) && !isNaN(refG) && Math.abs(g - refG) < 0.01;
+                    const isHValid = !isNaN(h_current) && !isNaN(refH) && Math.abs(h_current - refH) < 0.01;
+
                     const h_initial = simPotensialHeight;
                     const fallenHeight = h_initial - h_current;
                     const expectedV = (!isNaN(fallenHeight) && fallenHeight >= 0 && !isNaN(g)) ? Math.sqrt(2 * g * fallenHeight) : 0;
@@ -613,8 +654,22 @@ const EnergiExperiment = () => {
                     return (
                       <tr key={row.id}>
                         <td>{row.id}</td>
-                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setDataPotensial, row.id, 'massa', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
-                        <td><input type="number" value={row.g} onChange={(e) => updateTableData(setDataPotensial, row.id, 'g', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.massa}
+                            isValid={isMValid}
+                            correctHint={!isNaN(refM) ? refM.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataPotensial, row.id, 'massa', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.g}
+                            isValid={isGValid}
+                            correctHint={!isNaN(refG) ? refG.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataPotensial, row.id, 'g', e.target.value)}
+                          />
+                        </td>
                         <td>
                           <ValidatedInput
                             value={row.kecepatan}
@@ -623,7 +678,14 @@ const EnergiExperiment = () => {
                             onChange={(e) => updateTableData(setDataPotensial, row.id, 'kecepatan', e.target.value)}
                           />
                         </td>
-                        <td><input type="number" value={row.ketinggian} onChange={(e) => updateTableData(setDataPotensial, row.id, 'ketinggian', e.target.value)} className="input-field" style={{width:'100%', padding:'0.5rem'}} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.ketinggian}
+                            isValid={isHValid}
+                            correctHint={!isNaN(refH) ? refH.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataPotensial, row.id, 'ketinggian', e.target.value)}
+                          />
+                        </td>
                         <td>
                           <ValidatedInput
                             value={row.ep}

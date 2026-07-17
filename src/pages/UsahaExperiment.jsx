@@ -439,6 +439,17 @@ const UsahaExperiment = () => {
                     const f = parseFloat(row.f);
                     const w = parseFloat(row.w);
 
+                    const refRow = pengamatan1.find(p => p.id === row.id) || {};
+                    const refM = parseFloat(refRow.massa);
+                    const refS = parseFloat(refRow.sudut);
+                    const refG = parseFloat(refRow.g);
+                    const refD = parseFloat(refRow.d);
+
+                    const isMValid = !isNaN(m) && !isNaN(refM) && Math.abs(m - refM) < 0.01;
+                    const isSValid = !isNaN(s) && !isNaN(refS) && Math.abs(s - refS) < 0.01;
+                    const isGValid = !isNaN(g) && !isNaN(refG) && Math.abs(g - refG) < 0.01;
+                    const isDValid = !isNaN(d) && !isNaN(refD) && Math.abs(d - refD) < 0.01;
+
                     const expectedF = !isNaN(m) && !isNaN(s) && !isNaN(g) ? (m * g * Math.sin(s * Math.PI / 180)) : NaN;
                     const expectedW1 = !isNaN(f) && !isNaN(d) ? f * d : NaN;
                     const expectedW2 = !isNaN(expectedF) && !isNaN(d) ? expectedF * d : NaN;
@@ -452,10 +463,38 @@ const UsahaExperiment = () => {
                     return (
                       <tr key={row.id}>
                         <td>{row.id}</td>
-                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setDataUsaha1, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.sudut} onChange={(e) => updateTableData(setDataUsaha1, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.g} onChange={(e) => updateTableData(setDataUsaha1, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.d} onChange={(e) => updateTableData(setDataUsaha1, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.massa}
+                            isValid={isMValid}
+                            correctHint={!isNaN(refM) ? refM.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataUsaha1, row.id, 'massa', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.sudut}
+                            isValid={isSValid}
+                            correctHint={!isNaN(refS) ? refS.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataUsaha1, row.id, 'sudut', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.g}
+                            isValid={isGValid}
+                            correctHint={!isNaN(refG) ? refG.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataUsaha1, row.id, 'g', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.d}
+                            isValid={isDValid}
+                            correctHint={!isNaN(refD) ? refD.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataUsaha1, row.id, 'd', e.target.value)}
+                          />
+                        </td>
                         <td>
                           <ValidatedInput
                             value={row.f}
@@ -567,6 +606,17 @@ const UsahaExperiment = () => {
                     const f = parseFloat(row.f);
                     const w = parseFloat(row.w);
 
+                    const refRow = pengamatan2.find(p => p.id === row.id) || {};
+                    const refM = parseFloat(refRow.massa);
+                    const refS = parseFloat(refRow.sudut);
+                    const refG = parseFloat(refRow.g);
+                    const refD = parseFloat(refRow.d);
+
+                    const isMValid = !isNaN(m) && !isNaN(refM) && Math.abs(m - refM) < 0.01;
+                    const isSValid = !isNaN(s) && !isNaN(refS) && Math.abs(s - refS) < 0.01;
+                    const isGValid = !isNaN(g) && !isNaN(refG) && Math.abs(g - refG) < 0.01;
+                    const isDValid = !isNaN(d) && !isNaN(refD) && Math.abs(d - refD) < 0.01;
+
                     const expectedF = !isNaN(m) && !isNaN(s) && !isNaN(g) ? (m * g * Math.sin(s * Math.PI / 180)) : NaN;
                     const expectedW1 = !isNaN(f) && !isNaN(d) ? f * d : NaN;
                     const expectedW2 = !isNaN(expectedF) && !isNaN(d) ? expectedF * d : NaN;
@@ -580,10 +630,38 @@ const UsahaExperiment = () => {
                     return (
                       <tr key={row.id}>
                         <td>{row.id}</td>
-                        <td><input type="number" value={row.massa} onChange={(e) => updateTableData(setDataUsaha2, row.id, 'massa', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.sudut} onChange={(e) => updateTableData(setDataUsaha2, row.id, 'sudut', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.g} onChange={(e) => updateTableData(setDataUsaha2, row.id, 'g', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
-                        <td><input type="number" value={row.d} onChange={(e) => updateTableData(setDataUsaha2, row.id, 'd', e.target.value)} className="input-field" style={{ width: '100%', padding: '0.5rem' }} /></td>
+                        <td>
+                          <ValidatedInput
+                            value={row.massa}
+                            isValid={isMValid}
+                            correctHint={!isNaN(refM) ? refM.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataUsaha2, row.id, 'massa', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.sudut}
+                            isValid={isSValid}
+                            correctHint={!isNaN(refS) ? refS.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataUsaha2, row.id, 'sudut', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.g}
+                            isValid={isGValid}
+                            correctHint={!isNaN(refG) ? refG.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataUsaha2, row.id, 'g', e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <ValidatedInput
+                            value={row.d}
+                            isValid={isDValid}
+                            correctHint={!isNaN(refD) ? refD.toFixed(1) : '-'}
+                            onChange={(e) => updateTableData(setDataUsaha2, row.id, 'd', e.target.value)}
+                          />
+                        </td>
                         <td>
                           <ValidatedInput
                             value={row.f}
