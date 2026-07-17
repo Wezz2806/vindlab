@@ -275,7 +275,7 @@ const UsahaExperiment = () => {
 
                 <h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: 'var(--primary)' }}>📺 Materi Pengantar - Usaha</h4>
                 <p style={{ marginBottom: '1rem', fontSize: '1.15rem' }}>
-                  Apabila usaha bekerja pada bidang miring, dapat dituliskan dengan persamaan sebagai berikut:
+                  Usaha adalah energi yang disalurkan gaya ke sebuah benda sehingga benda tersebut bergerak. Apabila usaha bekerja pada bidang miring, dapat dituliskan dengan persamaan sebagai berikut:
                 </p>
                 <div style={{ marginBottom: '1.5rem', background: 'rgba(255,255,255,0.6)', padding: '0.75rem 1.75rem', display: 'inline-block', borderRadius: '8px', border: '1.5px dashed var(--primary)' }}>
                   <span style={{ fontWeight: '800', fontSize: '1.5rem', color: 'var(--primary)', letterSpacing: '1px' }}>
